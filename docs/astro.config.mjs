@@ -3,6 +3,9 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://gabInteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias/',
+  	base: '/docs',
+  
 	integrations: [
 		starlight({
 			title: 'M10 - Gabriela',
@@ -11,15 +14,11 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Ponderada 1',
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', link: '/guides/example/' },
+						{ label: 'Ponderada 1', link: '/ponderada1/solution/' },
 					],
-				},
-				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
 				},
 			],
 		}),
