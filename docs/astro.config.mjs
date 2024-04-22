@@ -2,8 +2,8 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-	site: 'https://gabInteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias/',
-  	base: '/',
+	site: 'gabInteli.github.io/',
+  	base: '/M10-Inteli-Eng-Comp_Gabriela_Matias',
 	integrations: [
 		starlight({
 			title: 'M10 - Gabriela',
