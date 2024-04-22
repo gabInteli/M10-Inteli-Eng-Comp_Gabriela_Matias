@@ -9,11 +9,13 @@ import os
 from datetime import datetime
 from sqlalchemy.orm.exc import UnmappedInstanceError
 from flask_wtf.csrf import validate_csrf
+from flask_swagger_ui import get_swaggerui_blueprint
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__, template_folder="templates")
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+
 # configure the SQLite database, relative to the app instance folder
 app.config['SQLALCHEMY_DATABASE_URI'] =\
         'sqlite:///' + os.path.join(basedir, 'db.db')
@@ -23,6 +25,18 @@ app.config["JWT_SECRET_KEY"] = "goku-vs-vegeta"
 # Seta o local onde o token será armazenado
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 jwt = JWTManager(app)
+
+SWAGGER_URL = '/docs'
+API_URL = '/static/swagger.yaml'
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "List"
+    }
+)
+
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 # Verifica se o parâmetro create_db foi passado na linha de comando
 import sys

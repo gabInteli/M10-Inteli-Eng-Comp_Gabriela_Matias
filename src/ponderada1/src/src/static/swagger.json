@@ -1,0 +1,545 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Sua API de Tarefas",
+    "description": "Documentação das APIs para gerenciar tarefas",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Tarefas",
+      "description": "Operações relacionadas a tarefas"
+    }
+  ],
+  "paths": {
+    "/token": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "summary": "Obter token de acesso",
+        "description": "Endpoint para obter um token de acesso válido",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Credenciais de usuário para autenticação",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token de acesso obtido com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas"
+          }
+        }
+      }
+    },
+    "/user-login": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Página de login do usuário",
+        "description": "Página HTML para login de usuário",
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "Página de login carregada com sucesso"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "summary": "Realizar login",
+        "description": "Endpoint para realizar login de usuário",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Credenciais inválidas"
+          }
+        }
+      }
+    },
+    "/user-register": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Página de registro de usuário",
+        "description": "Página HTML para registro de usuário",
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "Página de registro carregada com sucesso"
+          }
+        }
+      }
+    },
+    "/content": {
+      "get": {
+        "tags": [
+          "Conteúdo"
+        ],
+        "summary": "Conteúdo protegido",
+        "description": "Página HTML para exibição de conteúdo protegido",
+        "produces": [
+          "text/html"
+        ],
+        "security": [
+          {
+            "JWTAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Página de conteúdo carregada com sucesso"
+          }
+        }
+      }
+    },
+    "/error": {
+      "get": {
+        "tags": [
+          "Erro"
+        ],
+        "summary": "Página de erro",
+        "description": "Página HTML para exibição de erros",
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "Página de erro carregada com sucesso"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Obter todos os usuários",
+        "description": "Endpoint para obter todos os usuários cadastrados",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuários obtidos com sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Criar um novo usuário",
+        "description": "Endpoint para criar um novo usuário",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário criado com sucesso",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Obter um usuário por ID",
+        "description": "Endpoint para obter um usuário pelo ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário obtido com sucesso",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Atualizar um usuário",
+        "description": "Endpoint para atualizar um usuário existente",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Novos dados do usuário",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Excluir um usuário",
+        "description": "Endpoint para excluir um usuário",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário excluído com sucesso",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/task-list": {
+      "get": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Lista de tarefas",
+        "description": "Endpoint para obter a lista de tarefas",
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de tarefas obtida com sucesso"
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Obter todas as tarefas",
+        "description": "Endpoint para obter todas as tarefas cadastradas",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Tarefas obtidas com sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Task"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create": {
+      "get": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Formulário de nova tarefa",
+        "description": "Página HTML para criar uma nova tarefa",
+        "produces": [
+          "text/html"
+        ],
+        "security": [
+          {
+            "JWTAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Formulário de nova tarefa carregado com sucesso"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Criar uma nova tarefa",
+        "description": "Endpoint para criar uma nova tarefa",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "description",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "start_date",
+            "type": "string",
+            "format": "date",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "end_date",
+            "type": "string",
+            "format": "date",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tarefa criada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        }
+      }
+    },
+    "/task/{id}": {
+      "delete": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Excluir uma tarefa",
+        "description": "Endpoint para excluir uma tarefa pelo ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tarefa excluída com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Atualizar uma tarefa",
+        "description": "Endpoint para atualizar uma tarefa pelo ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Novos dados da tarefa",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tarefa atualizada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "JWTAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_date": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    }
+  }
+}
