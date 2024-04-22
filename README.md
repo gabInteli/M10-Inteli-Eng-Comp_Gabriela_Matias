@@ -1,9 +1,9 @@
 # Repositório Individual - Gabriela Rodrigues Matias 
-## Módulo 9 - Engenharia da Computação 
+## Módulo 10 - Engenharia da Computação 
 
 Toda documentação foi desenvolvida por meio do Docusaurus, que pode ser acessado no seguinte link:
 
-- [Documentação Docusaurus](https://gabinteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias/)
+- [Documentação Starlight](https://gabinteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias/)
 
 Para acessar as Ponderadas Individualmente, utilize os links abaixo:
 
