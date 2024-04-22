@@ -16,7 +16,7 @@ Nossa atividade ponderada envolve a construção de uma API síncrona, com o obj
 #### Collections do Insomnia: 
 [Link Insomnia] (https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada1/src/insomnia.json)
 #### YAML do OpenAPI (Swagger): 
-[Link Swagger](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada1/src/swagger.yaml)
+[Link Swagger](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada1/src/swagger.yaml) - Você tambem pode acessar o swagger acessando o servidor local e a rota: '/docs'.
 #### Código Fonte da API: 
 [Link API](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada1/src/src/main.py)
 #### Instruções de Execução da API: Esse você encontra aqui ! 🫡
