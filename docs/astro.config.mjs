@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-	site: 'gabInteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias',
+	site: process.env.CI ? 'https://gabInteli.github.io' : 'http://localhost:4321',
   	base: '/M10-Inteli-Eng-Comp_Gabriela_Matias/',
 	integrations: [
 		starlight({
