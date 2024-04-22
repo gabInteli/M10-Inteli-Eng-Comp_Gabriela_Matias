@@ -1,17 +1,19 @@
 from flask import Flask
-from flask_jwt_extended import JWTManager, set_access_cookies, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, set_access_cookies, create_access_token, jwt_required, get_jwt_identity, verify_jwt_in_request
 from database.database import db
-from flask import jsonify, request, render_template, make_response
+from flask import jsonify, request, render_template, make_response, redirect, url_for
 from database.models import User
 from database.models import Task
 import requests as http_request
 import os 
 from datetime import datetime
 from sqlalchemy.orm.exc import UnmappedInstanceError
+from flask_wtf.csrf import validate_csrf
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__, template_folder="templates")
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 # configure the SQLite database, relative to the app instance folder
 app.config['SQLALCHEMY_DATABASE_URI'] =\
         'sqlite:///' + os.path.join(basedir, 'db.db')
@@ -67,9 +69,12 @@ def login():
     token_data = http_request.post("http://localhost:5000/token", json={"email": email, "password": password})
     if token_data.status_code != 200:
         return render_template("error.html", message="Bad username or password")
+    
     # recupera o token
-    response = make_response(render_template("content.html"))
+    tasks = Task.query.all()
+    response = make_response(render_template("tasks.html", tasks=tasks))
     set_access_cookies(response, token_data.json()['token'])
+    
     return response
 
 # Código superior suprimido para facilitar a localização nos códigos
@@ -110,7 +115,9 @@ def create_user():
     
     db.session.add(user)
     db.session.commit()
-    return jsonify(user.serialize())
+    
+    # Redireciona o usuário para a rota de login após o registro
+    return redirect(url_for('user_login'))
 
 @app.route("/users/<int:id>", methods=["PUT"])
 def update_user(id):
@@ -130,8 +137,14 @@ def delete_user(id):
     return jsonify(user.serialize())
 
 @app.route("/task-list", methods=["GET"])
-def new_task_form():
-    return render_template("tasks.html")
+def task_list():
+    tasks = Task.query.all()
+    try:
+        verify_jwt_in_request()
+    except Exception:
+        # Se o token JWT não estiver presente nos cookies, redirecione para a rota de erro
+        return redirect("/error")
+    return render_template("tasks.html", tasks=tasks)
 
 @app.route("/tasks", methods=["GET"])
 def get_tasks():
@@ -142,30 +155,42 @@ def get_tasks():
     return jsonify(return_tasks)
 
 @app.route("/create", methods=["GET"])
+@jwt_required()
 def new_task_form():
+    # Verificar se o token JWT está presente nos cookies
+    user_id = get_jwt_identity()
+    if not user_id:
+        # Se o token JWT não estiver presente nos cookies, redirecionar para a rota de erro
+        return redirect("/error")
+
+    # Se o token JWT estiver presente nos cookies, renderizar a página newtask.html
     return render_template("newtask.html")
 
 @app.route("/newtask", methods=["POST"])
+@jwt_required()
 def create_task():
+    # Extrair os dados do formulário
     name = request.form.get("name")
     description = request.form.get("description")
     start_date_str = request.form.get("start_date")
     end_date_str = request.form.get("end_date")
 
+    # Converter as strings de data para objetos datetime
     start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
     end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
 
-    # Criando uma nova tarefa com os dados recebidos
+    # Criar uma nova tarefa com os dados recebidos
     task = Task(name=name, description=description, start_date=start_date, end_date=end_date)
     
-    # Criando um novo usuário com os dados recebidos
-    task = Task(name=name, description=description, start_date=start_date, end_date=end_date)
-    
+    # Adicionar a tarefa ao banco de dados e commit
     db.session.add(task)
     db.session.commit()
-    return jsonify(task.serialize())
+
+    # Redirecionar para a rota de lista de tarefas
+    return redirect(url_for('task_list'))
 
 @app.route("/task/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_task(id):
     task = Task.query.get(id)
     if task:
@@ -176,38 +201,43 @@ def delete_task(id):
         return jsonify({"message": "Task not found"}), 404
 
 @app.route("/task/<int:id>", methods=["PUT"])
+@jwt_required()
 def update_task(id):
-    task = Task.query.get(id)
-    if task:
-        # Atualiza os campos da tarefa com os novos valores, se fornecidos
-        data = request.json
-        updated = False  # Flag para indicar se algum campo foi atualizado
+    try:
+        task = Task.query.get(id)
+        if task:
+            # Atualiza os campos da tarefa com os novos valores, se fornecidos
+            data = request.json
+            updated = False  # Flag para indicar se algum campo foi atualizado
 
-        # Atualiza o nome da tarefa, se fornecido
-        if 'name' in data:
-            task.name = data['name']
-            updated = True
+            # Atualiza o nome da tarefa, se fornecido
+            if 'name' in data:
+                task.name = data['name']
+                updated = True
 
-        # Atualiza a descrição da tarefa, se fornecido
-        if 'description' in data:
-            task.description = data['description']
-            updated = True
+            # Atualiza a descrição da tarefa, se fornecido
+            if 'description' in data:
+                task.description = data['description']
+                updated = True
 
-        # Atualiza a data de início da tarefa, se fornecido
-        if 'start_date' in data:
-            task.start_date = datetime.strptime(data['start_date'], "%Y-%m-%d")
-            updated = True
+            # Atualiza a data de início da tarefa, se fornecido
+            if 'start_date' in data:
+                task.start_date = datetime.strptime(data['start_date'], "%Y-%m-%d")
+                updated = True
 
-        # Atualiza a data de término da tarefa, se fornecido
-        if 'end_date' in data:
-            task.end_date = datetime.strptime(data['end_date'], "%Y-%m-%d")
-            updated = True
+            # Atualiza a data de término da tarefa, se fornecido
+            if 'end_date' in data:
+                task.end_date = datetime.strptime(data['end_date'], "%Y-%m-%d")
+                updated = True
 
-        # Commit as mudanças no banco de dados se alguma atualização foi feita
-        if updated:
-            db.session.commit()
-            return jsonify(task.serialize())
+            # Commit as mudanças no banco de dados se alguma atualização foi feita
+            if updated:
+                db.session.commit()
+                return jsonify(task.serialize())
+            else:
+                return jsonify({"message": "No fields provided for update"}), 400
         else:
-            return jsonify({"message": "No fields provided for update"}), 400
-    else:
-        return jsonify({"message": "Task not found"}), 404
+            return jsonify({"message": "Task not found"}), 404
+    except Exception as e:
+        # Se ocorrer um erro, redireciona para a rota de erro
+        return redirect(url_for('error'))

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f3e5f5; /* Cor de fundo lilás */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            width: 70%;
+            background-color: #ffffff; /* Cor de fundo branca */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra do card */
+        }
+
+        h1, label, input, p {
+            text-align: left; /* Textos alinhados à esquerda */
+        }
+
+        ul {
+            list-style: none; /* Remove marcadores de lista */
+            padding: 0;
+        }
+
+        li {
+            display: flex; /* Display flex para alinhar os itens na mesma linha */
+            justify-content: space-between; /* Espaço entre os itens */
+            align-items: center; /* Alinhar os itens verticalmente */
+            margin-bottom: 20px; /* Espaçamento entre as tarefas */
+            border: 1px solid #ccc; /* Borda para cada tarefa */
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff; /* Cor de fundo branca */
+        }
+
+        .task-info {
+            flex: 1; /* Cresce para ocupar o espaço restante */
+        }
+
+        .task-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .task-buttons button {
+            background-color: #000000; /* Cor de fundo preta */
+            color: #ffffff; /* Cor do texto branco */
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .task-buttons button:hover {
+            background-color: #333333; /* Cor de fundo preta escura ao passar o mouse */
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #000000; /* Cor de fundo preta */
+            color: #ffffff; /* Cor do texto branco */
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #333333; /* Cor de fundo preta escura ao passar o mouse */
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1 style="margin-top: 100px;">Task List</h1>
+        <button style="background-color: #000000;"><a href="/create" style="background-color: #000000; color: #ffffff; cursor: pointer;">Create New Task</a></button>
+        <ul>
+            {% for task in tasks %}
+            <li>
+                <div class="task-info">
+                    <strong>Name:</strong> {{ task.name }}<br>
+                    <strong>Description:</strong> {{ task.description }}<br>
+                    <strong>Start Date:</strong> {{ task.start_date }}<br>
+                    <strong>End Date:</strong> {{ task.end_date }}<br>
+                </div>
+                <div class="task-buttons">
+                    <button onclick="deleteTask({{ task.id }})"><i class="fas fa-trash"></i></button>
+                    <button onclick="openEditModal({{ task.id }})"><i class="fas fa-edit"></i></button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Modal de Edição -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()" style="display: 'none'">&times;</span>
+            <!-- Formulário de edição -->
+            <form id="editTaskForm">
+                <!-- Campos de edição aqui -->
+                <label for="editName">Name:</label>
+                <input type="text" id="editName" name="editName"><br>
+                <label for="editDescription">Description:</label>
+                <input type="text" id="editDescription" name="editDescription"><br>
+                <label for="editStartDate">Start Date:</label>
+                <input type="date" id="editStartDate" name="editStartDate"><br>
+                <label for="editEndDate">End Date:</label>
+                <input type="date" id="editEndDate" name="editEndDate"><br><br>
+                <button type="submit" onClick="updateTask()">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        taskID = 0
+         // Função para fechar o modal de edição
+         function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+        function deleteTask(taskId) {
+            if (confirm("Are you sure you want to delete this task?")) {
+                fetch(`/task/${taskId}`, {
+                    method: "DELETE",
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Atualiza a página após a exclusão
+                            location.reload();
+                        } else {
+                            alert("Failed to delete task.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error deleting task:", error);
+                        alert("An error occurred while deleting the task.");
+                    });
+            }
+        }
+
+        function openEditModal(taskId) {
+            document.getElementById('editModal').style.display = 'block';
+            taskID = taskId; // Corrigido aqui para definir o valor de taskID corretamente
+        }
+
+        function updateTask(event) {
+            event.preventDefault(); // Evita o comportamento padrão de envio do formulário
+
+            // Recupera os valores dos campos do formulário
+            var name = document.getElementById('editName').value;
+            var description = document.getElementById('editDescription').value;
+            var start_date = document.getElementById('editStartDate').value;
+            var end_date = document.getElementById('editEndDate').value;
+
+            var data = {};
+
+            // Adiciona os campos não vazios ao objeto data
+            if (name.trim() !== '') {
+                data.name = name;
+            }
+
+            if (description.trim() !== '') {
+                data.description = description;
+            }
+
+            if (start_date.trim() !== '') {
+                data.start_date = start_date;
+            }
+
+            if (end_date.trim() !== '') {
+                data.end_date = end_date;
+            }
+
+            
+            // Envia os dados para a rota de atualização da tarefa usando fetch ou XMLHttpRequest
+            fetch('/task/' + taskID, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        alert("Você não esta Autorizado a Alterar as Tasks")
+                        throw new Error('Failed to update task');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    closeEditModal(); // Fecha o modal após o envio bem-sucedido
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        // Adicione um evento de escuta para o envio do formulário de edição
+        document.getElementById('editTaskForm').addEventListener('submit', updateTask);
+
+    </script>
+</body>
+</html>

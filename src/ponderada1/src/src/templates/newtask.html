@@ -4,19 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Task</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f3e5f5; /* Cor de fundo lilás */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            width: 70%;
+            background-color: #ffffff; /* Cor de fundo branca */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra do card */
+            text-align: center; /* Texto centralizado */
+        }
+
+        h1, label, input, textarea {
+            font-family: 'Roboto', sans-serif; /* Fonte Roboto */
+            color: #000000; /* Cor do texto preto */
+        }
+
+        input[type="text"], input[type="date"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #000000; /* Cor de fundo preta */
+            color: #ffffff; /* Cor do texto branco */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #333333; /* Cor de fundo preta escura ao passar o mouse */
+        }
+    </style>
 </head>
 <body>
-    <h1>New Task</h1>
-    <form action="/newtask" method="POST">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" required>
-        <label for="description">Description</label>
-        <textarea name="description" id="description" required></textarea>
-        <label for="start_date">Start Date</label>
-        <input type="date" name="start_date" id="start_date" required>
-        <label for="end_date">End Date</label>
-        <input type="date" name="end_date" id="end_date" required>
-        <input type="submit" value="Create Task">
-    </form>
+    <div class="card">
+        <h1>New Task</h1>
+        <form action="http://localhost:5000/newtask" method="POST">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" required>
+            <label for="description">Description</label>
+            <textarea name="description" id="description" required></textarea>
+            <label for="start_date">Start Date</label>
+            <input type="date" name="start_date" id="start_date" required>
+            <label for="end_date">End Date</label>
+            <input type="date" name="end_date" id="end_date" required>
+            <input type="submit" value="Create Task">
+        </form>
+    </div>
 </body>
 </html>
