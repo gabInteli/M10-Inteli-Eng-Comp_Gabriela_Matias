@@ -74,7 +74,7 @@ Todas as demais rotas tem o JWT como um parâmetro de acesso.
 
 ### Swagger 
 Foi desenvolvido um arquivo swagger para facilitar os testes e melhorar a documentação de toda API desenvolvida. 
-![Swagger](../../../assets/swagger.png)
+![Swagger](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/docs/src/assets/swagger.png)
 
 ### Demonstração de Funcionamento com Interface
 
