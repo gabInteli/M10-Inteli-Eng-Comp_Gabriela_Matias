@@ -18,6 +18,13 @@ export default defineConfig({
 						{ label: 'Ponderada 1', link: '/ponderada1/solution/' },
 					],
 				},
+				{
+					label: 'Ponderada 2',
+					items: [
+						// Each item here is one entry in the navigation menu.
+						{ label: 'Ponderada 2', link: '/ponderada2/solution/' },
+					],
+				},
 			],
 		}),
 	],
