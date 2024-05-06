@@ -7,8 +7,8 @@ Toda documentação foi desenvolvida por meio do Docusaurus, que pode ser acessa
 
 Para acessar as Ponderadas Individualmente, utilize os links abaixo:
 
-1. [Ponderada 1](https://gabinteli.github.io/M9-Inteli-Eng-Comp_Gabriela_Matias/docs/ponderada1/ponderada1)
-2. [Ponderada 2](https://gabinteli.github.io/M9-Inteli-Eng-Comp_Gabriela_Matias/docs/ponderada2/ponderada2)
+1. [Ponderada 1](https://gabinteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias/ponderada1/solution/)
+2. [Ponderada 2](https://gabinteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias/ponderada2/solution/)
 3. [Ponderada 3]  - ...Em Breve
 4. [Ponderada 4]  - ...Em Breve
 5. [Ponderada 5]  - ...Em Breve
