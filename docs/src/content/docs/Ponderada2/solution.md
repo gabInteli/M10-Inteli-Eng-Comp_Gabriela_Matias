@@ -14,19 +14,18 @@ Nossa atividade ponderada envolve a construção de APIs, com o objetivo princip
 ## Entregáveis
 
 #### Collections do Insomnia: 
-[Link Insomnia](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada1/src/insomnia.json)
+[Link Insomnia](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada2/src/static/Insomnia_2024-05-20.json)
 #### YAML do OpenAPI (Swagger): 
-[Link Swagger](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada1/src/swagger.yaml) - Você também pode acessar o swagger acessando o servidor local e a rota: '/docs'.
+[Link Swagger](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada2/src/static/swagger.yaml) - Você também pode acessar o swagger acessando o servidor local e a rota: '/docs'.
 #### Código Fonte da API: 
-[Link API](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada1/src/src/main.py)
+[Link API](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/blob/main/src/ponderada2/src/app.py)
 
-#### Instruções de Execução da API: Esse você encontra aqui ! 🫡
 
 ### Repositório de Resolução do Projeto
 
 [✔] [Ponderada 2](https://github.com/gabInteli/M10-Inteli-Eng-Comp_Gabriela_Matias/tree/main/src/ponderada2)
 
-## Requisitos - Instalando Dependências 
+### Instruções de Execução da API: Esse você encontra aqui ! 🫡
 
 1. Primeiro passo é Clonar o Repositório base: 
 ```
@@ -63,3 +62,25 @@ Por fim, iniciar o arquivo flutter da interface com o Emulador:
 ```
 flutter run
 ```
+
+### Autenticação - Níveis 
+Para criar uma API com niveis de seguraça, temos rotas que necessitam de autenticação para o acesso e rotas que não necessitam: 
+
+#### Rotas sem Autenticação: 
+- "/auth" - Aplica a criação da Autenticação
+
+
+#### Rotas com Autenticação: 
+- "/tasks" [GET] - Visualização de Todas as Tasks
+- "/tasks" [POST]- Criação de Novas Tasks
+- "/tasks/<id>" [GET]- Visualização de Task Específica
+- "/tasks/<id>" [UPDATE]- Atualização de Task Específica
+- "/tasks/<id>" [DELETE]- Deleção de Task Específica
+
+## Demonstração de Funcionamento das APIs
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=p5th6yFh63M" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Demonstração de Funcionamento da Interface
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=HtOgNZyJFug" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
