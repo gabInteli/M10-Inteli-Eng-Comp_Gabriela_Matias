@@ -20,10 +20,10 @@ class _MinhaSegundaTelaState extends State<MinhaSegundaTela> {
   }
 
   Future<void> fetchTasks() async {
-    String username = "user1";
-    String password = "senha1";
+    String username = "gabriela";
+    String password = "gabi";
     String basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
-    var url = Uri.parse('http:///localhost:5000/tasks');
+    var url = Uri.parse('http://172.21.208.1:5000/tasks');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': basicAuth,
@@ -37,69 +37,94 @@ class _MinhaSegundaTelaState extends State<MinhaSegundaTela> {
   }
 
   Future<void> editTask(String taskId, String newTitle) async {
-  String username = "user1";
-  String password = "senha1";
-  String basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
-  var url = Uri.parse('http://localhost:5000/tasks/$taskId');
-  Map<String, String> headers = {
-    'Content-Type': 'application/json',
-    'Authorization': basicAuth,
-  };
-  var response = await http.put(
-    url,
-    headers: headers,
-    body: json.encode({'title': newTitle}),
-  );
-  if (response.statusCode == 200) {
-    fetchTasks(); // Refresh tasks after editing
+    String username = "gabriela";
+    String password = "gabi";
+    String basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+    var url = Uri.parse('http://172.21.208.1:5000/tasks/$taskId');
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': basicAuth,
+    };
+    var response = await http.put(
+      url,
+      headers: headers,
+      body: json.encode({'title': newTitle}),
+    );
+    if (response.statusCode == 200) {
+      fetchTasks(); // Refresh tasks after editing
+    }
   }
-}
 
   void showEditDialog(String taskId, String currentTitle) {
-  TextEditingController _editController = TextEditingController(text: currentTitle);
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Edit Task"),
-        content: TextField(
-          controller: _editController,
-          decoration: InputDecoration(hintText: "Enter new task title"),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: Text("Cancel"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+    TextEditingController _editController = TextEditingController(text: currentTitle);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Edit Task"),
+          content: TextField(
+            controller: _editController,
+            decoration: InputDecoration(hintText: "Enter new task title"),
           ),
-          TextButton(
-            child: Text("Save"),
-            onPressed: () {
-              editTask(taskId, _editController.text);
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
+          actions: <Widget>[
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Save"),
+              onPressed: () {
+                editTask(taskId, _editController.text);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> deleteTask(String taskId) async {
-  String username = "user1";
-  String password = "senha1";
-  String basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
-  var url = Uri.parse('http:///localhost:5000/tasks/$taskId');
-  Map<String, String> headers = {
-    'Content-Type': 'application/json',
-    'Authorization': basicAuth,
-  };
-  var response = await http.delete(url, headers: headers);
-  if (response.statusCode == 200) {
-    fetchTasks(); // Refresh tasks after deletion
+    String username = "gabriela";
+    String password = "gabi";
+    String basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+    var url = Uri.parse('http://172.21.208.1:5000/tasks/$taskId');
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': basicAuth,
+    };
+    var response = await http.delete(url, headers: headers);
+    if (response.statusCode == 200) {
+      fetchTasks(); // Refresh tasks after deletion
+    }
   }
-}
+
+  Future<void> addTask() async {
+    String username = "gabriela";
+    String password = "gabi";
+    String basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+    var url = Uri.parse('http://172.21.208.1:5000/tasks');
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': basicAuth,
+    };
+    String jsonBody = json.encode({
+      'title': _controller.text,
+    });
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonBody,
+    );
+    if (response.statusCode == 201) { // Verifica se a resposta é 201 Created
+      fetchTasks();
+    } else {
+      // Trate erros, por exemplo, exibindo uma mensagem ao usuário
+      print("Falha ao adicionar tarefa: ${response.statusCode}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,28 +146,7 @@ class _MinhaSegundaTelaState extends State<MinhaSegundaTela> {
           ),
           ElevatedButton(
             onPressed: () async {
-              String username = "user1";
-              String password = "senha1";
-              String basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
-              String saida = '';
-              var url = Uri.parse('http:///localhost:5000/tasks');
-              Map<String, String> headers = {
-                'Content-Type': 'application/json',
-                'Authorization': basicAuth,
-              };
-              String jsonBody = json.encode({
-                'title': _controller.text,
-              });
-              var resposta = await http.post(
-                url,
-                headers: headers,
-                body: jsonBody,
-              );
-              fetchTasks();
-
-              setState(() {
-                saida = resposta.body;
-              });
+              await addTask();
             },
             child: const Text("Salvar"),
           ),

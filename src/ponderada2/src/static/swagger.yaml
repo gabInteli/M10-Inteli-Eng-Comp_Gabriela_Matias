@@ -1,137 +1,107 @@
-openapi: 3.0.0
+swagger: "2.0"
 info:
-  title: Lista de Tarefas API
-  description: Uma API simples para gerenciamento de tarefas
-  version: "1.0"
-servers:
-  - url: http://localhost:5000/
+  description: "API de Lista de Tarefas"
+  version: "1.0.0"
+  title: "List"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:5000"
+basePath: "/"
+tags:
+- name: "tasks"
+  description: "Operações relacionadas a tarefas"
+schemes:
+- "http"
 paths:
   /tasks:
     get:
-      summary: Lista todas as tarefas
-      operationId: listTasks
       tags:
-        - Tarefas
+      - "tasks"
+      summary: "Obter todas as tarefas"
+      description: "Retorna todas as tarefas disponíveis"
+      operationId: "getTasks"
       responses:
-        '200':
-          description: Lista de tarefas retornada com sucesso
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Task'
-      security:
-        - basicAuth: []
+        "200":
+          description: "Operação bem sucedida"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Task"
     post:
-      summary: Cria uma nova tarefa
-      operationId: createTask
       tags:
-        - Tarefas
-      requestBody:
+      - "tasks"
+      summary: "Adicionar uma nova tarefa"
+      description: "Adiciona uma nova tarefa à lista"
+      operationId: "addTask"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Tarefa a ser adicionada"
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TaskCreate'
+        schema:
+          $ref: "#/definitions/Task"
       responses:
-        '201':
-          description: Tarefa criada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-      security:
-        - basicAuth: []
+        "201":
+          description: "Tarefa adicionada com sucesso"
+          schema:
+            $ref: "#/definitions/Task"
+        "400":
+          description: "Solicitação inválida"
   /tasks/{task_id}:
     get:
-      summary: Obtém detalhes de uma tarefa específica
-      operationId: getTask
       tags:
-        - Tarefas
+      - "tasks"
+      summary: "Obter uma tarefa específica"
+      description: "Retorna uma tarefa específica com base no ID fornecido"
+      operationId: "getTaskById"
+      produces:
+      - "application/json"
       parameters:
-        - name: task_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Detalhes da tarefa
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-        '404':
-          description: Tarefa não encontrada
-      security:
-        - basicAuth: []
-    put:
-      summary: Atualiza uma tarefa existente
-      operationId: updateTask
-      tags:
-        - Tarefas
-      parameters:
-        - name: task_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
+      - name: "task_id"
+        in: "path"
+        description: "ID da tarefa a ser obtida"
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TaskUpdate'
+        type: "integer"
       responses:
-        '200':
-          description: Tarefa atualizada com sucesso
-      security:
-        - basicAuth: []
-    delete:
-      summary: Deleta uma tarefa específica
-      operationId: deleteTask
-      tags:
-        - Tarefas
-      parameters:
-        - name: task_id
-          in: path
-          required: true
+        "200":
+          description: "Operação bem sucedida"
           schema:
-            type: integer
+            $ref: "#/definitions/Task"
+        "404":
+          description: "Tarefa não encontrada"
+    put:
+      tags:
+      - "tasks"
+      summary: "Atualizar uma tarefa"
+      description: "Atualiza uma tarefa existente com base no ID fornecido"
+      operationId: "updateTask"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "task_id"
+        in: "path"
+        description: "ID da tarefa a ser atualizada"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Dados da tarefa a serem atualizados"
+        required: true
+        schema:
+          $ref: "#/definitions/Task"
       responses:
-        '200':
-          description: Tarefa deletada com sucesso
-        '404':
-          description: Tarefa não encontrada
-      security:
-        - basicAuth: []
-components:
-  securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
-  schemas:
-    Task:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-        title:
-          type: string
-          example: Terminar a documentação do Swagger
-    TaskCreate:
-      type: object
-      required:
-        - title
-      properties:
-        title:
-          type: string
-          example: Nova Tarefa
-    TaskUpdate:
-      type: object
-      properties:
-        title:
-          type: string
-          example: Tarefa Atualizada
+        "200":
+          description: "Tarefa atualizada com sucesso"
+          schema:
+            $ref: "#/definitions/Task"
+        "404
