@@ -23,7 +23,6 @@ python3 app.py
 ```
 
 A aplicação estará acessível em `http://localhost:5000/`.
-![image](https://github.com/VZeferino/M10/assets/99190423/47bdbdbd-7257-4616-86f0-dffe906869ed)
 
 
 ### Testes de Carga
@@ -43,5 +42,3 @@ O teste foi conduzido utilizando jmeter que permite simular e monitorar a respos
 #### Resultados
 
 Os resultados do teste de carga indicam como o sistema se comporta sob estresse. Os dados detalhados do teste estão disponíveis no arquivo summary.csv, incluído no diretório do projeto dentro da pasta static. Este relatório inclui tempos de resposta, taxa de erro das requisições, e outras métricas relevantes.
-
-Para visualizar, você pode clicar [aqui](https://github.com/VZeferino/M10/blob/main/ponderada2/static/summary.csv)
