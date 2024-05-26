@@ -64,7 +64,7 @@ class MinhaPrimeiraTela extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
-                      'assets/tasklist.png',
+                      'assets/Gabriela.png',
                       width: 200,
                       height: 200,
                       fit: BoxFit.cover,

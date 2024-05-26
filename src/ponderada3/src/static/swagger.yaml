@@ -1,0 +1,107 @@
+swagger: "2.0"
+info:
+  description: "API de Lista de Tarefas"
+  version: "1.0.0"
+  title: "List"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:5000"
+basePath: "/"
+tags:
+- name: "tasks"
+  description: "Operações relacionadas a tarefas"
+schemes:
+- "http"
+paths:
+  /tasks:
+    get:
+      tags:
+      - "tasks"
+      summary: "Obter todas as tarefas"
+      description: "Retorna todas as tarefas disponíveis"
+      operationId: "getTasks"
+      responses:
+        "200":
+          description: "Operação bem sucedida"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Task"
+    post:
+      tags:
+      - "tasks"
+      summary: "Adicionar uma nova tarefa"
+      description: "Adiciona uma nova tarefa à lista"
+      operationId: "addTask"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Tarefa a ser adicionada"
+        required: true
+        schema:
+          $ref: "#/definitions/Task"
+      responses:
+        "201":
+          description: "Tarefa adicionada com sucesso"
+          schema:
+            $ref: "#/definitions/Task"
+        "400":
+          description: "Solicitação inválida"
+  /tasks/{task_id}:
+    get:
+      tags:
+      - "tasks"
+      summary: "Obter uma tarefa específica"
+      description: "Retorna uma tarefa específica com base no ID fornecido"
+      operationId: "getTaskById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "task_id"
+        in: "path"
+        description: "ID da tarefa a ser obtida"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Operação bem sucedida"
+          schema:
+            $ref: "#/definitions/Task"
+        "404":
+          description: "Tarefa não encontrada"
+    put:
+      tags:
+      - "tasks"
+      summary: "Atualizar uma tarefa"
+      description: "Atualiza uma tarefa existente com base no ID fornecido"
+      operationId: "updateTask"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "task_id"
+        in: "path"
+        description: "ID da tarefa a ser atualizada"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Dados da tarefa a serem atualizados"
+        required: true
+        schema:
+          $ref: "#/definitions/Task"
+      responses:
+        "200":
+          description: "Tarefa atualizada com sucesso"
+          schema:
+            $ref: "#/definitions/Task"
+        "404
