@@ -9,7 +9,7 @@ Para acessar as Ponderadas Individualmente, utilize os links abaixo:
 
 1. [Ponderada 1](https://gabinteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias/ponderada1/solution/)
 2. [Ponderada 2](https://gabinteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias/ponderada2/solution/)
-3. [Ponderada 3]  - ...Em Breve
+3. [Ponderada 3](https://gabinteli.github.io/M10-Inteli-Eng-Comp_Gabriela_Matias/ponderada3/solution/)
 4. [Ponderada 4]  - ...Em Breve
 5. [Ponderada 5]  - ...Em Breve
 6. [Ponderada 6]  - ...Em Breve
