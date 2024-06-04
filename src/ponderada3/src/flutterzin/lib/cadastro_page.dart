@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CadastroPage extends StatelessWidget {
-  CadastroPage({Key? key}) : super(key: key);
+  CadastroPage({super.key});
 
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();

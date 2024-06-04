@@ -1,7 +1,9 @@
 version: '3.8'
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: auth.dockerfile
     ports:
       - "5000:5000"
     environment:
@@ -20,3 +22,12 @@ services:
       POSTGRES_DB: ponderada3
     ports:
       - "5432:5432"
+
+  image_processing:
+    build:
+      context: .
+      dockerfile: image.dockerfile  # Dockerfile para o serviço de processamento de imagem
+    ports:
+      - "8000:8000"  # Porta para o serviço de processamento de imagem
+    depends_on:
+      - db

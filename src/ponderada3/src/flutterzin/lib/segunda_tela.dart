@@ -56,27 +56,27 @@ class _MinhaSegundaTelaState extends State<MinhaSegundaTela> {
   }
 
   void showEditDialog(String taskId, String currentTitle) {
-    TextEditingController _editController = TextEditingController(text: currentTitle);
+    TextEditingController editController = TextEditingController(text: currentTitle);
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Edit Task"),
+          title: const Text("Edit Task"),
           content: TextField(
-            controller: _editController,
-            decoration: InputDecoration(hintText: "Enter new task title"),
+            controller: editController,
+            decoration: const InputDecoration(hintText: "Enter new task title"),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Save"),
+              child: const Text("Save"),
               onPressed: () {
-                editTask(taskId, _editController.text);
+                editTask(taskId, editController.text);
                 Navigator.of(context).pop();
               },
             ),
